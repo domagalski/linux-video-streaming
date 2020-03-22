@@ -1,4 +1,4 @@
-# Linux Video Conferencing using OBS and Gstreamer/FFmpeg
+# Linux Video Conferencing using OBS Studio and Gstreamer/FFmpeg
 
 There's currently a market shortage in standard USB webcams due to current
 events causing many people to be working from home. I didn't manage to buy one
@@ -8,18 +8,18 @@ proof-of-concept.
 
 I'm running Ubuntu 18.04. Instructions may differ for other distributions.
 
-OBS isn't strictly required, but it can be useful for easy color correction and
-other video broadcasting tools. If you want to use multiple webcams as sources,
-then OBS is required. That said, for those who don't want to use OBS you can
-use the V4L2 device that you're piping the IP camera video to as the video
-source.
+OBS Studio isn't strictly required, but it can be useful for easy color
+correction and other video broadcasting tools. If you want to use multiple
+webcams as sources, then it is required. That said, for those who don't want to
+use OBS you can use the V4L2 device that you're piping the IP camera video to
+as the video source.
 
 ## Browser support
 
 Here's my success with using the techniques described below with various web
 browsers on Linux.
 
-### Using OBS as a video source
+### Using OBS Studio as a webcam video source
 
 * Firefox: It works
 * Google Chrome: It works
