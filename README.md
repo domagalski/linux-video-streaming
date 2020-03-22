@@ -1,4 +1,4 @@
-# Linux Video Conferencing using OBS and Gstreamer
+# Linux Video Conferencing using OBS and Gstreamer/FFmpeg
 
 There's currently a market shortage in standard USB webcams due to current
 events causing many people to be working from home. I didn't manage to buy one
@@ -10,11 +10,29 @@ I'm running Ubuntu 18.04. Instructions may differ for other distributions.
 
 OBS isn't strictly required, but it can be useful for easy color correction and
 other video broadcasting tools. If you want to use multiple webcams as sources,
-then OBS is required. I should also mention that I haven't gotten the gstreamer
-commands I've been using to work with Google Hangouts on Firefox without OBS. I
-generally prefer using OBS, since it lets me have more control over the video
-feed than simply directly piping a video source into video conferencing
-software.
+then OBS is required. That said, for those who don't want to use OBS you can
+use the V4L2 device that you're piping the IP camera video to as the video
+source.
+
+## Browser support
+
+Here's my success with using the techniques described below with various web
+browsers on Linux.
+
+### Using OBS as a video source
+
+* Firefox: It works
+* Google Chrome: It works
+
+### Using Gstreamer as a video source without OBS
+
+* Firefox: I haven't gotten it to work
+* Google Chrome: It works
+
+### Using FFmpeg as a video source without OBS
+
+* Firefox: It works
+* Google Chrome: It works
 
 ## Camera Setup
 
@@ -59,7 +77,7 @@ have two camera sources that you want to use as video sources. The following
 command will set that up for you.
 
 ```
-$ sudo modprobe v4l2loopback video_nr=10,11,12 card_label="OBS Video","Camera 1",Camera 2"
+$ sudo modprobe v4l2loopback video_nr=10,11,12 card_label="OBS Video","Camera 1",Camera 2" exclusive_caps=1,1,1
 ```
 
 The stock `v4l2loopback` Ubuntu packages let you create a maximum of eight
@@ -80,7 +98,7 @@ adjust as necessary for the video setup that you need.
 Place the following contents in `/etc/modprobe.d/v4l2loopback.conf`:
 
 ```
-options v4l2loopback video_nr=10,11,12 card_label="OBS Video","Camera 1","Camera 2"
+options v4l2loopback video_nr=10,11,12 card_label="OBS Video","Camera 1","Camera 2" exclusive_caps=1,1,1
 ```
 
 Place the following contents in `/etc/modules-load.d/v4l2loopback.conf`:
@@ -114,6 +132,21 @@ for the IP camera device.
 
 Once you have gstreamer launched for all of the cameras you're using, you can
 configure them for usage with OBS Studio as V4L2 Video Capture Devices.
+
+#### FFmpeg equivalent command
+
+If you prefer FFmpeg to Gstreamer, the following command pipes video from an IP
+camera to  V4L2 device. Note that you need to manually set up the frame rate
+and resolution (I'm using 1920x1080 in the example).
+
+```
+$ ffmpeg -i <rtsp uri> -r 30 -s 1920x1080 -vcodec rawvideo -pix_fmt yuv420p -f v4l2 -vf scale=1920x1080 /dev/video11
+```
+
+I generally prefer Gstreamer to FFmpeg since there's less that I need to know
+about the video source a-priori, but if you don't want to use OBS and are a
+Firefox user, then I recommend using FFmpeg instead of Gstreamer for piping
+video to a V4L2 device.
 
 ### Configuring OBS Studio to output to a V4L2 device.
 
