@@ -29,7 +29,7 @@ enabled, it looks like:
 rtsp://username:password@WYZE_CAM_IP/live
 ```
 
-This will be different with other camera manufacturers.
+This will be different for other camera manufacturers.
 
 ## Linux Setup
 
@@ -99,32 +99,26 @@ video (many IP cameras encode with h264 or h265 by default), decodes it, and
 puts it into a video device:
 
 ```
-gst-launch-1.0 rtspsrc drop-on-latency=true location=<rtsp uri> ! decodebin ! videoconvert ! v4l2sink device=/dev/video11
+$ gst-launch-1.0 rtspsrc drop-on-latency=true location=<rtsp uri> ! decodebin ! videoconvert ! v4l2sink device=/dev/video11
 ```
 
 Awesome! See the
 [`rtspsrc`](https://gstreamer.freedesktop.org/documentation/rtsp/rtspsrc.html)
 and
 [`v4l2sink`](https://gstreamer.freedesktop.org/documentation/video4linux2/v4l2sink.html)
-documentation for more options for configuring the gstreamer pipeline for the
-IP camera device.
+gstreamer documentation for more options for configuring the gstreamer pipeline
+for the IP camera device.
 
 Once you have gstreamer launched for all of the cameras you're using, you can
 configure them for usage with OBS Studio as V4L2 Video Capture Devices.
 
 ### Configuring OBS Studio to output to a V4L2 device.
 
-First, install OBS studio via `apt` if you haven't already:
-
-```
-sudo apt install obs-studio
-```
-
 By default OBS doesn't have the capability of outputting video to a V4L2
 device. However, there is a plugin that can be used for that. This is required
 to use the output of OBS for video conferencing. Instructions for installing
-the OBS V4L2 output plugin can be found at the [`obs-v4l2sink` GitHub
-page](https://github.com/CatxFish/obs-v4l2sink).
+the OBS V4L2 output plugin can be found at the
+[`obs-v4l2sink`](https://github.com/CatxFish/obs-v4l2sink) GitHub page.
 
 Once you have that installed, you can use `/dev/video10` (or whatever you've
 configured as the OBS output device via `v4l2loopback` on your system) with the
