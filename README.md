@@ -11,7 +11,10 @@ I'm running Ubuntu 18.04. Instructions may differ for other distributions.
 OBS isn't strictly required, but it can be useful for easy color correction and
 other video broadcasting tools. If you want to use multiple webcams as sources,
 then OBS is required. I should also mention that I haven't gotten the gstreamer
-commands I've been using to work with Google Hangouts on Firefox without OBS.
+commands I've been using to work with Google Hangouts on Firefox without OBS. I
+generally prefer using OBS, since it lets me have more control over the video
+feed than simply directly piping a video source into video conferencing
+software.
 
 ## Camera Setup
 
