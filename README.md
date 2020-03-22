@@ -105,7 +105,7 @@ puts it into a video device:
 $ gst-launch-1.0 rtspsrc drop-on-latency=true location=<rtsp uri> ! decodebin ! videoconvert ! v4l2sink device=/dev/video11
 ```
 
-Awesome! See the
+See the
 [`rtspsrc`](https://gstreamer.freedesktop.org/documentation/rtsp/rtspsrc.html)
 and
 [`v4l2sink`](https://gstreamer.freedesktop.org/documentation/video4linux2/v4l2sink.html)
