@@ -193,9 +193,12 @@ V4L2 output plugin under the OBS tools menu.
 My instructions above do not mention audio. While some IP cameras have audio,
 I prefer to use an actual dedicated microphone for video conferencing. The
 Linux application I use for configuring my audio setup is called `pavucontrol`.
-Nothing special needs to be done to set up Linux audio on Ubuntu, however it
-should be worth pointing out that if you're using an IP camera, there will be
-some video latency between when you do something on the camera and when it
-shows up on screen in OBS. It may be necessary to add a manual audio latency to
-match the video latency. This can be done in `pavucontrol` from the `Input
-Devices` tab in the advanced settings for your microphone device.
+Nothing special needs to be done to set up Linux audio on Ubuntu if the stock
+microphone sound options are suitable for you. However it should be worth
+pointing out that if you're using an IP camera, there will be some video
+latency between when you do something on the camera and when it shows up on
+screen in OBS. It may be necessary to add a manual audio latency to match the
+video latency. This can be done in `pavucontrol` from the `Input Devices` tab
+in the advanced settings for your microphone device. That said, I'm currently
+using my DSLR as my primary camera for video conferencing, so latency
+mismatches aren't a huge issue for me.
