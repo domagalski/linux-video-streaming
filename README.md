@@ -1,4 +1,4 @@
-# Linux Video Conferencing using OBS Studio and Gstreamer/FFmpeg
+# Linux Video Conferencing and Streaming using OBS, Gstreamer, and FFmpeg
 
 There's currently a market shortage in standard USB webcams due to current
 events causing many people to be working from home. I didn't manage to buy one
