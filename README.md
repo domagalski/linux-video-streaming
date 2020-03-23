@@ -126,7 +126,7 @@ camera's USB interface. This is can be mitigated by killing the relevant gvfs
 processes:
 
 ```
-$ killall -9 gvfs-gphoto2-volumn-monitor
+$ killall -9 gvfs-gphoto2-volume-monitor
 $ killall -9 gvfsd-gphoto2
 ```
 
