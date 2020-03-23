@@ -2,9 +2,9 @@
 
 There's currently a market shortage in standard USB webcams due to current
 events causing many people to be working from home. I didn't manage to buy one
-before they all sold out. I have a few IP security apartments in my apartment,
-so I figured I'd try to repurpose one for usage with video conferencing as a
-proof-of-concept.
+before they all sold out, but I own a DSLR and I have a few IP security
+apartments in my apartment. I figured I'd try to use them for video
+conferencing as a proof-of-concept.
 
 I'm running Ubuntu 18.04. Instructions may differ for other distributions.
 
@@ -36,6 +36,11 @@ browsers on Linux.
 
 ## Camera Setup
 
+The DSLR shouldn't require any special setup. I'm using mine with the USB cable
+that came with it. The most it takes for setup is lens selection and camera
+placement. Beyond that, if it is supported by `gphoto2` (most Nikon and Canon
+cameras are), then it should be good to go.
+
 In order for this to work, you need to have an IP camera capable of producing
 RTSP streams. I am using the Wyze cam since I have one lying around, but any
 camera capable of being an RTSP video source should work. RTSP setup for
@@ -62,6 +67,7 @@ installed via `apt`.
 * `v4l2loopback-utils`
 * `gstreamer1.0-tools`
 * `obs-studio`
+* `gphoto2`
 
 I forget which gstreamer plugin set that I needed to get to get stuff working,
 but I have the good, bad, and ugly plugin packages installed from the Ubuntu
@@ -112,7 +118,29 @@ If you reboot your computer, you should see the devices `/dev/video10`,
 
 ## Capturing Video
 
-### Start capturing the IP camera with gstreamer
+### Capturing from the DSLR
+
+Capturing with the DSLR is fairly straightforward. That said, before running
+`gphoto2`, Ubuntu may have the gvfs daemon auto-detecting and auto-claiming the
+camera's USB interface. This is can be mitigated by killing the relevant gvfs
+processes:
+
+```
+$ killall -9 gvfs-gphoto2-volumn-monitor
+$ killall -9 gvfsd-gphoto2
+```
+
+Once those processes have been killed, the following command will pipe the DLSR
+camera feed to video device:
+
+```
+$ gphoto2 --stdout --capture-movie | gst-launch-1.0 fdsrc fd=0 ! decodebin name=dec ! queue ! videoconvert ! tee ! v4l2sink device=/dev/video11
+```
+
+For convenience, I've added the script `v4l2-gphoto2` to run these three
+commands.
+
+### Capturing the IP Camera
 
 Now that your video devices are set up, it's time to start piping the RTSP
 stream into them. The following command takes one RTSP stream encoded as h264
@@ -120,7 +148,7 @@ video (many IP cameras encode with h264 or h265 by default), decodes it, and
 puts it into a video device:
 
 ```
-$ gst-launch-1.0 rtspsrc drop-on-latency=true location=<rtsp uri> ! decodebin ! videoconvert ! v4l2sink device=/dev/video11
+$ gst-launch-1.0 rtspsrc drop-on-latency=true location=<rtsp uri> ! decodebin ! videoconvert ! v4l2sink device=/dev/video12
 ```
 
 See the
@@ -140,7 +168,7 @@ camera to  V4L2 device. Note that you need to manually set up the frame rate
 and resolution (I'm using 1920x1080 in the example).
 
 ```
-$ ffmpeg -i <rtsp uri> -r 30 -s 1920x1080 -vcodec rawvideo -pix_fmt yuv420p -f v4l2 -vf scale=1920x1080 /dev/video11
+$ ffmpeg -i <rtsp uri> -r 30 -s 1920x1080 -vcodec rawvideo -pix_fmt yuv420p -f v4l2 -vf scale=1920x1080 /dev/video12
 ```
 
 I generally prefer Gstreamer to FFmpeg since there's less that I need to know

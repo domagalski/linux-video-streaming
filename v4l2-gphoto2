@@ -1,0 +1,6 @@
+#!/bin/bash
+
+killall -9 gvfs-gphoto2-volumn-monitor
+killall -9 gvfsd-gphoto2
+
+gphoto2 --stdout --capture-movie | gst-launch-1.0 fdsrc fd=0 ! decodebin name=dec ! queue ! videoconvert ! tee ! v4l2sink device=/dev/video11
